@@ -65,4 +65,4 @@ exports.signin = (req, res) => {
       });
     }
   });
-}
+};
