@@ -34,6 +34,10 @@ const Signup = (props) => {
     return <Redirect to={`/`} />;
   }
 
+  if(user.loading) {
+    return <p>Loading...</p>
+  }
+
   return (
     <Layout>
       <Container>
