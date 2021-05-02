@@ -33,6 +33,11 @@ export default (state = initialState, action) => {
         authenticating: false,
       };
       break;
+      case authConstants.LOGOUT_REQUEST:
+      state = {
+        ...initialState
+      }
+      break;
   }
 
   return state;
