@@ -7,6 +7,8 @@ import PrivateRoute from "./components/HOC/PrivateRoute";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { isUserLoggedIn } from "./actions";
+import Products from "./pages/Products";
+import Orders from "./pages/Orders";
 
 function App() {
   const dispatch = useDispatch();
@@ -22,6 +24,8 @@ function App() {
     <div className="App">
       <Switch>
         <PrivateRoute path="/" exact component={Home} />
+        <PrivateRoute path="/products" component={Products} />
+        <PrivateRoute path="/orders" component={Orders} />
         <Route path="/signin" component={Signin} />
         <Route path="/signup" component={Signup} />
       </Switch>
