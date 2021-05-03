@@ -2,18 +2,20 @@ import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import Header from "../Header";
 import { NavLink } from "react-router-dom";
+import "./style.css"
 
 const Layout = (props) => {
   return (
     <>
       <Header />
-      {props.sidebar ? (
+      {
+      props.sidebar ? (
         <Container fluid>
           <Row>
             <Col md={2} className="sidebar">
               <ul>
                 <li>
-                  <NavLink to={`/`}>Home</NavLink>
+                  <NavLink exact to={`/`}>Home</NavLink>
                 </li>
                 <li>
                   <NavLink to={`/category`}>Category</NavLink>
