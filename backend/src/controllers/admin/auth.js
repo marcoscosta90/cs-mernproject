@@ -1,6 +1,7 @@
 const User = require("../../models/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const shortid = require("shortid");
 
 exports.signup = (req, res) => {
   User.findOne({
@@ -18,7 +19,7 @@ exports.signup = (req, res) => {
       lastName,
       email,
       hash_password,
-      username: Math.random().toString(),
+      username: shortid.generate(),
       role: "admin",
     });
 
@@ -41,6 +42,7 @@ exports.signin = (req, res) => {
   User.findOne({ email: req.body.email }).exec((error, user) => {
     if (error) return res.status(400).json({ error });
     if (user) {
+      
       if (user.authenticate(req.body.password) && user.role === "admin") {
         const token = jwt.sign(
           { _id: user._id, role: user.role },

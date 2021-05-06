@@ -65,7 +65,7 @@ const Products = (props) => {
             <th>#</th>
             <th>Product Name</th>
             <th>Price</th>
-            <th>Quantity</th>            
+            <th>Quantity</th>
             <th>Category</th>
           </tr>
         </thead>
