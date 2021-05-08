@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { addCategory, getAllCategory } from "../../actions";
+import { addCategory } from "../../actions";
 import Layout from "../../components/Layout";
 import Input from "../../components/UI/Input";
 import Modal from "../../components/UI/Modal";
+import CheckboxTree from "react-checkbox-tree";
+import { IoCheckbox, IoCheckboxOutline, IoArrowForward, IoArrowDown } from "react-icons/io5";
+
+import 'react-checkbox-tree/lib/react-checkbox-tree.css';
 
 const Category = (props) => {
   const category = useSelector((state) => state.category);
@@ -12,6 +16,9 @@ const Category = (props) => {
   const [parentCategoryId, setParentCategoryId] = useState("");
   const [categoryImage, setCategoryImage] = useState("");
   const [show, setShow] = useState(false);
+  const [checked, setChecked] = useState([]);
+  const [expanded, setExpanded] = useState([]);
+
   const dispatch = useDispatch();
 
   const handleClose = () => {
@@ -39,14 +46,12 @@ const Category = (props) => {
     let myCategories = [];
 
     for (let category of categories) {
-      myCategories.push(
-        <li key={category.name}>
-          {category.name}
-          {category.children.length > 0 ? (
-            <ul>{renderCategories(category.children)}</ul>
-          ) : null}
-        </li>
-      );
+      myCategories.push({
+        label: category.name,
+        value: category._id,
+        children:
+          category.children.length > 0 && renderCategories(category.children),
+      });
     }
     return myCategories;
   };
@@ -77,7 +82,20 @@ const Category = (props) => {
         </Row>
         <Row>
           <Col md={12}>
-            <ul>{renderCategories(category.categories)}</ul>
+            <CheckboxTree
+              nodes={renderCategories(category.categories)}
+              checked={checked}
+              expanded={expanded}
+              onCheck={(checked) => setChecked(checked)}
+              onExpand={(expanded) => setExpanded(expanded)}
+              icons={{
+                check: <IoCheckbox />,
+                uncheck: <IoCheckboxOutline />,
+                halfCheck: <IoCheckboxOutline />,
+                expandClose: <IoArrowForward />,
+                expandOpen: <IoArrowDown />,
+              }}
+            />
           </Col>
         </Row>
       </Container>
