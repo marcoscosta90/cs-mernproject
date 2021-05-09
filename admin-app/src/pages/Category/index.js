@@ -6,9 +6,14 @@ import Layout from "../../components/Layout";
 import Input from "../../components/UI/Input";
 import Modal from "../../components/UI/Modal";
 import CheckboxTree from "react-checkbox-tree";
-import { IoCheckbox, IoCheckboxOutline, IoArrowForward, IoArrowDown } from "react-icons/io5";
+import {
+  IoCheckbox,
+  IoCheckboxOutline,
+  IoArrowForward,
+  IoArrowDown,
+} from "react-icons/io5";
 
-import 'react-checkbox-tree/lib/react-checkbox-tree.css';
+import "react-checkbox-tree/lib/react-checkbox-tree.css";
 
 const Category = (props) => {
   const category = useSelector((state) => state.category);
@@ -18,6 +23,9 @@ const Category = (props) => {
   const [show, setShow] = useState(false);
   const [checked, setChecked] = useState([]);
   const [expanded, setExpanded] = useState([]);
+  const [checkedArray, setCheckedArray] = useState([]);
+  const [expandedArray, setExpandedArray] = useState([]);
+  const [updateCategoryModal, setUpdateCategoryModal] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -30,12 +38,6 @@ const Category = (props) => {
     dispatch(addCategory(form));
     setCategoryName("");
     setParentCategoryId("");
-
-    //const cat = {
-    // categoryName,
-    // parentCategoryId,
-    //  categoryImage,
-    // };
 
     setShow(false);
   };
@@ -69,6 +71,12 @@ const Category = (props) => {
   const handleCategoryImage = (e) => {
     setCategoryImage(e.target.files[0]);
   };
+
+  const updateCategory = () => {
+    setUpdateCategoryModal(true);
+    console.log({ checked, expanded });
+  };
+
   return (
     <Layout sidebar>
       <Container>
@@ -76,7 +84,7 @@ const Category = (props) => {
           <Col md={12}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <h3>Category</h3>
-              <button onClick={handleShow}>Add</button>
+              <button onClick={handleShow}>Addd</button>
             </div>
           </Col>
         </Row>
@@ -96,6 +104,12 @@ const Category = (props) => {
                 expandOpen: <IoArrowDown />,
               }}
             />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <button>Delete</button>
+            <button onClick={updateCategory}>Edit</button>
           </Col>
         </Row>
       </Container>
@@ -123,6 +137,55 @@ const Category = (props) => {
           ))}
         </select>
 
+        <input
+          type="file"
+          name="categoryImage"
+          onChange={handleCategoryImage}
+        />
+      </Modal>
+
+      {/* Edit categories */}
+      <Modal
+        show={updateCategoryModal}
+        handleClose={() => setUpdateCategoryModal(false)}
+        modalTitle={"Update Categories"}
+        size="lg"
+      >
+        <Row>
+          <Col>
+            <h6>Expanded</h6>
+          </Col>
+          <Col>
+            <Input
+              value={categoryName}
+              placeholder={`Category Name`}
+              onChange={(e) => setCategoryName(e.target.value)}
+            />
+          </Col>
+          <Col>
+            <select
+              className="form-control"
+              value={parentCategoryId}
+              onChange={(e) => setParentCategoryId(e.target.value)}
+            >
+              <option>Select category</option>
+              {createCategoryList(category.categories).map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+          </Col>
+
+          <Col>
+            <select className="form-control">
+              <option value="">Select Type</option>
+              <option value="store">Store</option>
+              <option value="product">Product</option>
+              <option value="page">Page</option>
+            </select>
+          </Col>
+        </Row>
         <input
           type="file"
           name="categoryImage"
